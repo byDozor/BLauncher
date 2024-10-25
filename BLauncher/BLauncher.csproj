@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="View\Res\Background\Background.png" />
+    <None Remove="View\Res\Background\bgfromnews.jpg" />
+    <None Remove="View\Res\Icons\CloseButton.png" />
+    <None Remove="View\Res\Icons\CollapsButton.png" />
+    <None Remove="View\Res\Icons\icon%24.png" />
+    <None Remove="View\Res\Icons\Icon.ico" />
+    <None Remove="View\Res\Icons\iconDiscord.png" />
+    <None Remove="View\Res\Icons\iconForum.png" />
+    <None Remove="View\Res\Icons\iconInstagram.png" />
+    <None Remove="View\Res\Icons\IconProgram.png" />
+    <None Remove="View\Res\Icons\iconSite.png" />
+    <None Remove="View\Res\Icons\iconTelegram.png" />
+    <None Remove="View\Res\Icons\iconYoutube.png" />
+    <None Remove="View\Res\Icons\logo.png" />
+    <None Remove="View\Res\Icons\SettingsButton.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="View\Res\TopBackground\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="View\Res\Background\Background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Background\bgfromnews.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\Icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\IconProgram.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\CloseButton.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\CollapsButton.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\icon$.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\iconDiscord.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\iconForum.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\iconInstagram.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\iconSite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\iconTelegram.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\iconYoutube.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="View\Res\Icons\SettingsButton.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SAMPQuery" Version="1.1.1" />
+    <PackageReference Include="SSH.NET" Version="2024.1.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,317 @@
+﻿<Window x:Class="BLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BLauncher.View"
+        Icon="/View/Res/Icons/Icon.ico"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="1100" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" WindowStartupLocation="CenterScreen" Background="Transparent"
+        StateChanged="Window_StateChanged">
+    <!-- xmlns:local="clr-namespace:BLauncher" -->
+    <Window.Resources>
+        <Style TargetType="Window">
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CornerRadius="20" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="IconTextButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Foreground" Value="#F7FCFF"/>
+            <!-- Колір тексту за замовчуванням -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <!-- Іконка -->
+                            <Image x:Name="ButtonIcon" Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" 
+                                   Width="24" Height="24" Margin="0,0,5,0"/>
+                            <!-- Текст -->
+                            <TextBlock x:Name="ButtonText" Text="{TemplateBinding Content}"
+                                       FontFamily="Cambria"       
+                                       FontSize="20"             
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <!-- Ефект ховера для іконки та тексту -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonIcon" Property="Opacity" Value="0.7"/>
+                                <Setter Property="Opacity" Value="0.7"/>
+                                <!-- Зміна кольору тексту -->
+                            </Trigger>
+                            <!-- Ефект натискання -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonIcon" Property="Opacity" Value="0.5"/>
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопок з іконками соц.мереж -->
+        <Style x:Key="IconOnlyButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="#F7FCFF"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="26"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <!-- Іконка -->
+                            <Image x:Name="ButtonIcon" Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" 
+                                   Width="26" Height="26" Stretch="Uniform" VerticalAlignment="Top" Margin="0,-4,0,0"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <!-- Ефект ховера -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonIcon" Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                            <!-- Ефект натискання -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonIcon" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Storyboard x:Key="MinimizeStoryboard">
+            <DoubleAnimation 
+                Storyboard.TargetName="MainGrid" 
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" 
+                From="1" To="0.1" Duration="0:0:0.2" 
+                FillBehavior="HoldEnd" />
+            <DoubleAnimation 
+                Storyboard.TargetName="MainGrid" 
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" 
+                From="1" To="0.1" Duration="0:0:0.2" 
+                FillBehavior="HoldEnd" />
+            <DoubleAnimation 
+                Storyboard.TargetName="MainGrid" 
+                Storyboard.TargetProperty="Opacity" 
+                From="1" To="0" Duration="0:0:0.2" 
+                FillBehavior="HoldEnd" />
+        </Storyboard>
+
+        <Storyboard x:Key="RestoreStoryboard">
+            <DoubleAnimation 
+                Storyboard.TargetName="MainGrid" 
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" 
+                From="0.1" To="1" Duration="0:0:0.2" />
+            <DoubleAnimation 
+                Storyboard.TargetName="MainGrid" 
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" 
+                From="0.1" To="1" Duration="0:0:0.2" />
+            <DoubleAnimation 
+                Storyboard.TargetName="MainGrid" 
+                Storyboard.TargetProperty="Opacity" 
+                From="0" To="1" Duration="0:0:0.2" />
+        </Storyboard>
+    </Window.Resources>
+    <Border Background="Transparent" CornerRadius="20" BorderThickness="1" >
+        <!-- BorderBrush="Gray"-->
+        <Grid x:Name="MainGrid" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <ScaleTransform/>
+            </Grid.RenderTransform>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="780"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="#1B2734" CornerRadius="20,0,0,20" Height="598" VerticalAlignment="Bottom">
+                <TextBlock Text="Banderstadt Project" Foreground="White" FontFamily="Cambria" FontSize="32" 
+                           FontStyle="Italic" Margin="112,39,38,483" TextWrapping="WrapWithOverflow"/>
+            </Border>
+            <TextBlock Foreground="#F7FCFF" FontFamily="Cambria" FontSize="20" Margin="100,162,100,409" 
+                       TextWrapping="WrapWithOverflow"><Run Language="uk-ua" Text="Ваш нікнейм"/></TextBlock>
+            <Image x:Name="Logo" Margin="41,36,199,482" Source="/View/Res/Icons/logo.png" Stretch="Fill" Width="80" Height="80"/>
+            <Grid x:Name="TextBoxContainer" Margin="41,199,44,369">
+                <TextBox x:Name="MyTextBox" 
+                     Padding="5" 
+                     VerticalContentAlignment="Center" 
+                     Width="235" 
+                     Height="30" 
+                     GotFocus="MyTextBox_GotFocus" 
+                     LostFocus="MyTextBox_LostFocus" 
+                     TextChanged="MyTextBox_TextChanged" 
+                     Text=""
+                     TextAlignment="Center"
+                     FontFamily="Cambria"
+                     Foreground="#1B2734"
+                     FontWeight="Bold" 
+                     FontSize="16" Margin="0,-10,0,10">
+
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
+                                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+                <TextBlock x:Name="PlaceholderText" 
+                       Text="Введіть ваш нікнейм" 
+                       Foreground="Gray" 
+                       VerticalAlignment="Top" 
+                       IsHitTestVisible="False" 
+                       Visibility="Visible" 
+                       HorizontalAlignment="Center" OpacityMask="#7F000000" Margin="0,-3,0,0" />
+            </Grid>
+
+            <Button Click="SiteButton_Click" Style="{StaticResource IconTextButtonStyle}" Content="Сайт" Tag="/View/Res/Icons/iconSite.png" Width="150" Height="50" Margin="41,259,129,289"/>
+            <Button Click="ForumButton_Click" Style="{StaticResource IconTextButtonStyle}" Content="Форум" Tag="/View/Res/Icons/iconForum.png" Width="150" Height="50" Margin="41,308,129,240"/>
+            <Button Click="DonateButton_Click" Style="{StaticResource IconTextButtonStyle}" Content="Донат" Tag="/View/Res/Icons/icon$.png" Width="150" Height="50" Margin="41,359,129,189" />
+            <TextBlock Foreground="#F7FCFF" FontFamily="Cambria" FontSize="20" FontWeight="Bold" Margin="80,460,83,109" 
+                TextWrapping="WrapWithOverflow"><Run Language="uk-ua" Text="Наші соцмережі"/></TextBlock>
+            <Button Click="TelegramButton_Click" Style="{StaticResource IconOnlyButtonStyle}" Tag="/View/Res/Icons/iconTelegram.png" Margin="77,504,217,68" />
+            <Button Click="InstagramButton_Click" Style="{StaticResource IconOnlyButtonStyle}" Tag="/View/Res/Icons/iconInstagram.png" Margin="121,504,173,68" />
+            <Button Click="DiscordButton_Click" Style="{StaticResource IconOnlyButtonStyle}" Tag="/View/Res/Icons/iconDiscord.png" Margin="165,505,129,67" />
+            <Button Click="YoutubeButton_Click" Style="{StaticResource IconOnlyButtonStyle}" Tag="/View/Res/Icons/iconYoutube.png" Margin="209,506,85,66" />
+
+            <!--  -->
+            <Border Grid.Column="1" CornerRadius="0,20,20,0" Margin="0">
+                <Border.Background>
+                    <ImageBrush ImageSource="/View/Res/Background/Background.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+            <Button Click="CloseButton_Click" Style="{StaticResource IconOnlyButtonStyle}" Tag="/View/Res/Icons/CloseButton.png" Margin="745,13,9,559" Grid.Column="1" />
+            <Button Click="MinimizeButton_Click" Style="{StaticResource IconOnlyButtonStyle}" Tag="/View/Res/Icons/CollapsButton.png" Margin="714,13,40,559" Grid.Column="1" />
+            <Button Click="SettingsButton_Click" Style="{StaticResource IconOnlyButtonStyle}" Tag="/View/Res/Icons/SettingsButton.png" Margin="682,13,72,559" Grid.Column="1" />
+
+            <TextBlock Foreground="#1C1B24" FontFamily="Cambria" FontSize="20" FontWeight="Bold" Margin="300,60,300,509" 
+                TextWrapping="WrapWithOverflow" Grid.Column="1"><Run Language="uk-ua" Text="НОВИНИ ПРОЄКТУ"/></TextBlock>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Margin="0,96,0,322" Width="700">
+                <local:NewsBlockControl ImageSource="/View/Res/Background/bgfromnews.jpg" NewsText="Коротка інформація про першу новину та перевірка переносу тексту на інший рядок." Width="350" />
+                <local:NewsBlockControl ImageSource="/View/Res/Background/bgfromnews.jpg" NewsText="Коротка інформація про першу новину" Width="350" />
+            </StackPanel>
+
+            <Border Width="626" Height="80" Background="#1C1B24" CornerRadius="10" Padding="10" Margin="77,329,77,189" Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <!-- Квадрат з текстом -->
+                        <ColumnDefinition Width="60"/>
+                        <!-- Текст BANDERSTADT PROJECT | DEVELOPER SERVER -->
+                        <ColumnDefinition Width="22*"/>
+                        <ColumnDefinition Width="15*"/>
+                        <!-- Додаткова інформація (Гравці та Ping) -->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Квадрат з текстом "01" -->
+                    <Border Grid.Column="0" Width="48" Height="48" Background="#D9D9D9" CornerRadius="10" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="01" Foreground="#1C1B24" FontWeight="Bold" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Cambria"/>
+                    </Border>
+
+                    <!-- Текст BANDERSTADT PROJECT | DEVELOPER SERVER -->
+                    <TextBlock Grid.Column="1" x:Name="hostname" Text="BANDERSTADT PROJECT | DEVELOPER SERVER" FontWeight="Bold" Foreground="#D9D9D9" VerticalAlignment="Center" FontSize="16" FontFamily="Cambria" Grid.ColumnSpan="2"/>
+
+                    <!-- Додаткова інформація -->
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <!-- Блок "Гравці" -->
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <TextBlock Text="Гравці" Margin="5,0,0,0" Foreground="#D9D9D9" HorizontalAlignment="Center" FontFamily="Cambria" FontWeight="Bold"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <!-- Іконка зеленого кружечка -->
+                                <Ellipse x:Name="hostavailability" Width="10" Height="10" Fill="#209E24" Margin="0,5,0,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="players" Text="999/1000" Foreground="#D9D9D9" Margin="5,5,5,0" VerticalAlignment="Center" FontFamily="Cambria" FontWeight="Bold"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Роздільник між "Гравці" і "Ping" -->
+                        <Rectangle Width="20" Fill="Transparent"/>
+
+                        <!-- Блок "Ping" -->
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <TextBlock Text="Ping" Foreground="#D9D9D9" Margin="15,0,0,0" HorizontalAlignment="Center" FontFamily="Cambria" FontWeight="Bold"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <!-- Іконка якості зв'язку (4 вертикальні полоси) -->
+                                <StackPanel Orientation="Horizontal" Margin="5,5,0,0" VerticalAlignment="Center">
+                                    <!-- Полоси -->
+                                    <Rectangle Width="3" Height="4" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
+                                    <Rectangle Width="3" Height="6" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
+                                    <Rectangle Width="3" Height="8" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
+                                    <Rectangle Width="3" Height="10" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
+                                </StackPanel>
+                                <TextBlock x:Name="ping" Text="100 ms" Foreground="#D9D9D9" Margin="5,5,0,0" VerticalAlignment="Center" FontFamily="Cambria" FontWeight="Bold"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Column="1" Margin="0,465,0,0">
+
+                <!-- Прямокутник з текстом -->
+                <Border Width="500" Height="80" Background="#1C1B24" CornerRadius="10" BorderBrush="Transparent">
+                    <TextBlock Text="У Вас актуальна версія. Приємної гри :)" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" 
+                           Foreground="#F7FCFF" 
+                           FontSize="16"/>
+                </Border>
+
+                <!-- Відступ між прямокутником та кнопкою -->
+                <Border Width="26" Background="Transparent"/>
+
+                <!-- Кнопка з іконкою та текстом із заокругленням 10 -->
+                <Button Width="100" Height="80" Background="#1C1B24" BorderBrush="Transparent" Padding="10" 
+        Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" CornerRadius="10" Background="{TemplateBinding Background}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <!-- Іконка play (контур трикутника) -->
+                                    <Viewbox Width="24" Height="24">
+                                        <Canvas Width="20" Height="20">
+                                            <Polygon Points="0,0 20,10 0,20" Stroke="#F7FCFF" StrokeThickness="2" Fill="Transparent" />
+                                        </Canvas>
+                                    </Viewbox>
+                                    <!-- Відступ між іконкою і текстом -->
+                                    <TextBlock Text="Грати" Foreground="#F7FCFF" FontSize="16" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#A4141B"/>
+                                    <Setter Property="Foreground" Value="#F7FCFF"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="#F7FCFF"/>
+                                    <Setter Property="TextBlock.Foreground" Value="#F7FCFF"/>
+                                    <Setter TargetName="border" Property="BorderThickness" Value="1"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#A4141B"/>
+                                    <Setter Property="Foreground" Value="#F7FCFF"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="#1C1B24"/>
+                                    <Setter Property="TextBlock.Foreground" Value="#1C1B24"/>
+                                    <Setter TargetName="border" Property="BorderThickness" Value="1"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

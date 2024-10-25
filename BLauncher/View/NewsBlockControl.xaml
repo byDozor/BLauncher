@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="BLauncher.View.NewsBlockControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="170" d:DesignWidth="275">
+    <!-- Додаємо ресурси в UserControl -->
+    <UserControl.Resources>
+        <!-- Стиль для кнопки "Докладніше" -->
+        <Style x:Key="NewsButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Background" Value="#1C1B24"/>
+            <Setter Property="Foreground" Value="#F7FCFF"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontFamily" Value="Cambria"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="PART_Border" Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Ефект ховера -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Border" Property="Background" Value="#A4141B"/>
+                                <!-- Темніший фон при наведенні -->
+                                <Setter Property="Foreground" Value="#F7FCFF"/>
+                                <!-- Текст залишається білим -->
+                            </Trigger>
+                            <!-- Ефект натискання -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="PART_Border" Property="Background" Value="#A4141B"/>
+                                <!-- Колір фону при натисканні -->
+                                <Setter Property="Foreground" Value="#1B2734"/>
+                                <!-- Текст змінюється на темний -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- Основний контент UserControl -->
+    <Border CornerRadius="10" Width="275" Height="170" ClipToBounds="True">
+        <Grid>
+            <!-- Фонова картинка -->
+            <Rectangle RadiusX="10" RadiusY="10">
+                <Rectangle.Fill>
+                    <ImageBrush ImageSource="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <!-- Синя маска -->
+            <Border Background="#1B2734" Opacity="0.5" CornerRadius="10"/> 
+
+            <!-- Контент новини -->
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0">
+                <!-- Кнопка "Докладніше..." -->
+                <Button Style="{StaticResource NewsButtonStyle}" Content="Докладніше..." />
+
+                <!-- Текст новини -->
+                <TextBlock Text="{Binding NewsText, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                           FontSize="13" FontFamily="Cambria" FontWeight="Bold" 
+                           Foreground="White" TextAlignment="Left" TextWrapping="Wrap" Margin="0,10,0,0" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>
