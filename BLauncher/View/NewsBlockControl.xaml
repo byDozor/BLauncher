@@ -11,7 +11,7 @@
         <Style x:Key="NewsButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="120"/>
             <Setter Property="Height" Value="32"/>
-            <Setter Property="Background" Value="#1C1B24"/>
+            <Setter Property="Background" Value="#1B2734"/>
             <Setter Property="Foreground" Value="#F7FCFF"/>
             <Setter Property="FontSize" Value="10"/>
             <Setter Property="FontFamily" Value="Cambria"/>

@@ -199,7 +199,7 @@
             <Button Click="MinimizeButton_Click" Style="{StaticResource IconOnlyButtonStyle}" Tag="/View/Res/Icons/CollapsButton.png" Margin="714,13,40,559" Grid.Column="1" />
             <Button Click="SettingsButton_Click" Style="{StaticResource IconOnlyButtonStyle}" Tag="/View/Res/Icons/SettingsButton.png" Margin="682,13,72,559" Grid.Column="1" />
 
-            <TextBlock Foreground="#1C1B24" FontFamily="Cambria" FontSize="20" FontWeight="Bold" Margin="300,60,300,509" 
+            <TextBlock Foreground="#1B2734" FontFamily="Cambria" FontSize="20" FontWeight="Bold" Margin="300,60,300,509" 
                 TextWrapping="WrapWithOverflow" Grid.Column="1"><Run Language="uk-ua" Text="НОВИНИ ПРОЄКТУ"/></TextBlock>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Margin="0,96,0,322" Width="700">
@@ -207,7 +207,7 @@
                 <local:NewsBlockControl ImageSource="/View/Res/Background/bgfromnews.jpg" NewsText="Коротка інформація про першу новину" Width="350" />
             </StackPanel>
 
-            <Border Width="626" Height="80" Background="#1C1B24" CornerRadius="10" Padding="10" Margin="77,329,77,189" Grid.Column="1">
+            <Border Width="626" Height="80" Background="#1B2734" CornerRadius="10" Padding="10" Margin="77,329,77,189" Grid.Column="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <!-- Квадрат з текстом -->
@@ -221,7 +221,7 @@
 
                     <!-- Квадрат з текстом "01" -->
                     <Border Grid.Column="0" Width="48" Height="48" Background="#D9D9D9" CornerRadius="10" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <TextBlock Text="01" Foreground="#1C1B24" FontWeight="Bold" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Cambria"/>
+                        <TextBlock Text="01" Foreground="#1B2734" FontWeight="Bold" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Cambria"/>
                     </Border>
 
                     <!-- Текст BANDERSTADT PROJECT | DEVELOPER SERVER -->
@@ -263,7 +263,7 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Column="1" Margin="0,465,0,0">
 
                 <!-- Прямокутник з текстом -->
-                <Border Width="500" Height="80" Background="#1C1B24" CornerRadius="10" BorderBrush="Transparent">
+                <Border Width="500" Height="80" Background="#1B2734" CornerRadius="10" BorderBrush="Transparent">
                     <TextBlock Text="У Вас актуальна версія. Приємної гри :)" 
                            VerticalAlignment="Center" 
                            HorizontalAlignment="Center" 
@@ -275,7 +275,7 @@
                 <Border Width="26" Background="Transparent"/>
 
                 <!-- Кнопка з іконкою та текстом із заокругленням 10 -->
-                <Button Width="100" Height="80" Background="#1C1B24" BorderBrush="Transparent" Padding="10" 
+                <Button Width="100" Height="80" Background="#1B2734" BorderBrush="Transparent" Padding="10" 
         Cursor="Hand">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
@@ -302,8 +302,8 @@
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter TargetName="border" Property="Background" Value="#A4141B"/>
                                     <Setter Property="Foreground" Value="#F7FCFF"/>
-                                    <Setter TargetName="border" Property="BorderBrush" Value="#1C1B24"/>
-                                    <Setter Property="TextBlock.Foreground" Value="#1C1B24"/>
+                                    <Setter TargetName="border" Property="BorderBrush" Value="#1B2734"/>
+                                    <Setter Property="TextBlock.Foreground" Value="#1B2734"/>
                                     <Setter TargetName="border" Property="BorderThickness" Value="1"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>

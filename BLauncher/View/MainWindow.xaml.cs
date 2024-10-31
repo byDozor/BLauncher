@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using SAMPQuery;
 using BLauncher.ViewModel;
+using BLauncher.View;
 using System.Diagnostics;
 
 namespace BLauncher
@@ -162,7 +163,9 @@ namespace BLauncher
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("В розробці");
+            //MessageBox.Show("В розробці");
+            var launcherUpdates = new LauncherUpdates();
+            launcherUpdates.CheckAndUpdate();
         }
     }
 }
