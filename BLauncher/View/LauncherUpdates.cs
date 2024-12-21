@@ -13,10 +13,12 @@ namespace BLauncher.View
 {
     class LauncherUpdates
     {
-        string SFTP_SERVER = (string)Settings.SFTP_SERVER;
-        string SFTP_USER = (string)Settings.SFTP_USER;
-        string SFTP_PASSWORD = (string)Settings.SFTP_PASSWORD;
-        string curVersion = (string)Settings.currentVersion;
+        private string SFTP_SERVER = Settings.SFTP_SERVER;
+        private string SFTP_USER = Settings.SFTP_USER;
+        private string SFTP_PASSWORD = Settings.SFTP_PASSWORD;
+        private int SFTP_PORT = 38444;
+
+        string curVersion = GetLocalProductVersion();
 
         //string CuttenVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(4);
 
@@ -30,9 +32,27 @@ namespace BLauncher.View
             }
         }
 
-        private bool IsNewVersion(string currentVersion, string latestVersion)
+        public static string GetLocalProductVersion()
+        {
+            return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).ProductVersion ?? "1.0.0";
+        }
+
+        /*private bool IsNewVersion(string currentVersion, string latestVersion)
         {
             return new Version(latestVersion).CompareTo(new Version(currentVersion)) > 0;
+        }*/
+        private bool IsNewVersion(string currentVersion, string latestVersion)
+        {
+            if (Version.TryParse(latestVersion, out Version? latest) &&
+                Version.TryParse(currentVersion, out Version? current))
+            {
+                return latest.CompareTo(current) > 0;
+            }
+            else
+            {
+                MessageBox.Show($"Невірний формат версії: {latestVersion}");
+                return false;
+            }
         }
 
         public async void CheckAndUpdate()
@@ -42,6 +62,10 @@ namespace BLauncher.View
             {
                 MessageBox.Show($"[BETA]\nВийшла нова версія лаунчеру: {latestVersion}\nВстановлена версія:{curVersion}\nОновлення буде встановлено автоматично\nНатисніть ОК щоб продовжити");
                 string tempUpdatePath = Path.Combine(Path.GetTempPath(), "BLauncherUpdate");
+                if (Directory.Exists(tempUpdatePath))
+                {
+                    Directory.Delete(tempUpdatePath, true);
+                }
                 await DownloadUpdate(url, tempUpdatePath);
             }
             else
@@ -51,29 +75,21 @@ namespace BLauncher.View
         }
         private async Task DownloadUpdate(string url, string tempDirectory)
         {
-            string host = SFTP_SERVER; // замініть на свій домен
-            string username = SFTP_USER;
-            string password = SFTP_PASSWORD;
-            int port = 38444;
             string remoteFilePath = "/home/ftpuser/files/Launcher/update.zip"; // повний шлях до файлу на сервері
-            string localFilePath = Path.Combine(tempDirectory, "update.zip"); // зберігає в тимчасовій папці
+            string localFilePath = Path.Combine(tempDirectory, "update.zip");
 
             try
             {
-                using (var sftp = new SftpClient(host, port, username, password))
+                using (var sftp = new SftpClient(SFTP_SERVER, SFTP_PORT, SFTP_USER, SFTP_PASSWORD))
                 {
-                    // Підключаємося до SFTP-сервера
                     sftp.Connect();
-                    // Створюємо тимчасову директорію, якщо її ще не існує
                     Directory.CreateDirectory(tempDirectory);
-                    // Завантажуємо файл
                     using (var fileStream = new FileStream(localFilePath, FileMode.Create))
                     {
                         await Task.Run(() => sftp.DownloadFile(remoteFilePath, fileStream));
                     }
-                    // Розпаковуємо завантажений архів у тимчасову директорію
+
                     System.IO.Compression.ZipFile.ExtractToDirectory(localFilePath, tempDirectory, true);
-                    // Відключаємося від SFTP-сервера
                     sftp.Disconnect();
 
                     if (File.Exists(localFilePath))

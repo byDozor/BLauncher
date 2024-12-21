@@ -140,14 +140,14 @@
                        TextWrapping="WrapWithOverflow"><Run Language="uk-ua" Text="Ваш нікнейм"/></TextBlock>
             <Image x:Name="Logo" Margin="41,36,199,482" Source="/View/Res/Icons/logo.png" Stretch="Fill" Width="80" Height="80"/>
             <Grid x:Name="TextBoxContainer" Margin="41,199,44,369">
-                <TextBox x:Name="MyTextBox" 
+                <TextBox x:Name="NicknameTextBox" 
                      Padding="5" 
                      VerticalContentAlignment="Center" 
                      Width="235" 
                      Height="30" 
-                     GotFocus="MyTextBox_GotFocus" 
-                     LostFocus="MyTextBox_LostFocus" 
-                     TextChanged="MyTextBox_TextChanged" 
+                     GotFocus="NicknameTextBox_GotFocus" 
+                     LostFocus="NicknameTextBox_LostFocus" 
+                     TextChanged="NicknameTextBox_TextChanged" 
                      Text=""
                      TextAlignment="Center"
                      FontFamily="Cambria"
@@ -203,8 +203,8 @@
                 TextWrapping="WrapWithOverflow" Grid.Column="1"><Run Language="uk-ua" Text="НОВИНИ ПРОЄКТУ"/></TextBlock>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Margin="0,96,0,322" Width="700">
-                <local:NewsBlockControl ImageSource="/View/Res/Background/bgfromnews.jpg" NewsText="Коротка інформація про першу новину та перевірка переносу тексту на інший рядок." Width="350" />
-                <local:NewsBlockControl ImageSource="/View/Res/Background/bgfromnews.jpg" NewsText="Коротка інформація про першу новину" Width="350" />
+                <local:NewsBlockControl ImageSource="/View/Res/Background/bgfromnews.jpg" NewsText="Новин нема, дапабачення" Width="350" />
+                <local:NewsBlockControl ImageSource="/View/Res/Background/bgfromnews.jpg" NewsText="Новин нема, дапабачення" Width="350" />
             </StackPanel>
 
             <Border Width="626" Height="80" Background="#1B2734" CornerRadius="10" Padding="10" Margin="77,329,77,189" Grid.Column="1">
@@ -249,10 +249,10 @@
                                 <!-- Іконка якості зв'язку (4 вертикальні полоси) -->
                                 <StackPanel Orientation="Horizontal" Margin="5,5,0,0" VerticalAlignment="Center">
                                     <!-- Полоси -->
-                                    <Rectangle Width="3" Height="4" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
-                                    <Rectangle Width="3" Height="6" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
-                                    <Rectangle Width="3" Height="8" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
-                                    <Rectangle Width="3" Height="10" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
+                                    <Rectangle x:Name="PingRect1" Width="3" Height="4" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
+                                    <Rectangle x:Name="PingRect2" Width="3" Height="6" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
+                                    <Rectangle x:Name="PingRect3" Width="3" Height="8" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
+                                    <Rectangle x:Name="PingRect4" Width="3" Height="10" Fill="Orange" Margin="1,0" VerticalAlignment="Bottom"/>
                                 </StackPanel>
                                 <TextBlock x:Name="ping" Text="100 ms" Foreground="#D9D9D9" Margin="5,5,0,0" VerticalAlignment="Center" FontFamily="Cambria" FontWeight="Bold"/>
                             </StackPanel>
@@ -260,25 +260,86 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Column="1" Margin="0,465,0,0">
-
-                <!-- Прямокутник з текстом -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Grid.Column="1" Margin="0,465,77,0" HorizontalAlignment="Right" Width="626">
                 <Border Width="500" Height="80" Background="#1B2734" CornerRadius="10" BorderBrush="Transparent">
-                    <TextBlock Text="У Вас актуальна версія. Приємної гри :)" 
-                           VerticalAlignment="Center" 
-                           HorizontalAlignment="Center" 
-                           Foreground="#F7FCFF" 
-                           FontSize="16"/>
+                    <Grid>
+                        <TextBlock x:Name="StatusMessage" Visibility="Visible"
+                                   Text="Натисніть грати, щоб виконати перевірку файлів гри!"
+                                   Foreground="#F7FCFF"
+                                   HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" 
+                                   FontSize="16" Height="29" Width="496" TextWrapping="Wrap" TextAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-0.203"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <StackPanel x:Name="DownloadPanel" Visibility="Collapsed" Margin="10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Рядок для текстових елементів -->
+                                <Grid Grid.Row="0" Margin="10,0,10,0">
+                                    <!-- Текст зліва -->
+                                    <TextBlock Text="Завантажуємо файли гри.."
+                                               FontFamily="Cambria"
+                                               VerticalAlignment="Center" 
+                                               HorizontalAlignment="Left" 
+                                               Foreground="#F7FCFF" 
+                                               FontSize="12"/>
+
+                                    <!-- Текст з розміром файлів справа -->
+                                    <TextBlock x:Name="FileSizeText" 
+                                               FontFamily="Cambria"
+                                               Text="100 MB / 1000 MB" 
+                                               VerticalAlignment="Center" 
+                                               HorizontalAlignment="Right" 
+                                               Foreground="#F7FCFF" 
+                                               FontSize="12" 
+                                               Margin="0,0,40,0"/>
+
+                                    <!-- Текст з відсотками справа, правіше за розмір файлів -->
+                                    <TextBlock x:Name="PercentageText" 
+                                               FontFamily="Cambria"
+                                               Text="30%" 
+                                               VerticalAlignment="Center" 
+                                               HorizontalAlignment="Right" 
+                                               Foreground="#F7FCFF"
+                                               
+                                               FontSize="12" />
+                                </Grid>
+
+                                <!-- Рядок для ProgressBar -->
+                                <Border Grid.Row="1" Height="17" Background="Transparent" CornerRadius="10" Margin="0,5,0,10">
+                                    <ProgressBar x:Name="DownloadProgressBar"  
+                                         Width="464" 
+                                         Height="17" 
+                                         Foreground="#A4141B">
+                                        <ProgressBar.Clip>
+                                            <RectangleGeometry RadiusX="5" RadiusY="5" Rect="0,0,464,17"/>
+                                        </ProgressBar.Clip>
+                                    </ProgressBar>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
                 </Border>
 
                 <!-- Відступ між прямокутником та кнопкою -->
                 <Border Width="26" Background="Transparent"/>
 
                 <!-- Кнопка з іконкою та текстом із заокругленням 10 -->
-                <Button Width="100" Height="80" Background="#1B2734" BorderBrush="Transparent" Padding="10" 
-        Cursor="Hand">
+                <Button Click="PlayButton_Click" Width="100" Height="80" Background="#1B2734" BorderBrush="Transparent" Padding="10" 
+                        Cursor="Hand">
                     <Button.Template>
-                        <ControlTemplate TargetType="Button">
+                        <ControlTemplate TargetType="{x:Type Button}">
                             <Border x:Name="border" CornerRadius="10" Background="{TemplateBinding Background}">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <!-- Іконка play (контур трикутника) -->
@@ -288,7 +349,7 @@
                                         </Canvas>
                                     </Viewbox>
                                     <!-- Відступ між іконкою і текстом -->
-                                    <TextBlock Text="Грати" Foreground="#F7FCFF" FontSize="16" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="Грати" Foreground="#F7FCFF" FontSize="16" Margin="10,0,0,0" VerticalAlignment="Center" FontFamily="Cambria" />
                                 </StackPanel>
                             </Border>
                             <ControlTemplate.Triggers>
